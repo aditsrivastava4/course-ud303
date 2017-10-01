@@ -24,7 +24,9 @@ from urllib.parse import parse_qs
 class MessageHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         # 1. How long was the message? (Use the Content-Length header.)
-
+        length = int(self.headers.get('Content-length', 0))
+        data = self.rfile.read(length).decode()
+        message = parse_qs(data)["message"][0]
         # 2. Read the correct amount of data from the request.
 
         # 3. Extract the "message" field from the request data.
@@ -36,6 +38,6 @@ class MessageHandler(BaseHTTPRequestHandler):
         self.wfile.write(message.encode())
 
 if __name__ == '__main__':
-    server_address = ('', 8000)
+    server_address = ('', 8008)
     httpd = HTTPServer(server_address, MessageHandler)
     httpd.serve_forever()
