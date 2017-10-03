@@ -2,7 +2,7 @@
 #
 # Test script for the Messageboard Part Three server.
 #
-# The server should be listening on port 8000, answer a GET request with
+# The server should be listening on port 8008, answer a GET request with
 # an HTML document, and answer a POST request with a redirect to the
 # main page.
 
@@ -13,17 +13,17 @@ def test_connect():
     print("Testing connecting to the server.")
     try:
         with socket.socket() as s:
-           s.connect(("localhost", 8000))
+           s.connect(("localhost", 8008))
         print("Connection attempt succeeded.")
         return None
     except socket.error:
-        return "Server didn't answer on localhost port 8000.  Is it running?"
+        return "Server didn't answer on localhost port 8008.  Is it running?"
 
 def test_POST_303():
     '''The server should accept a POST and return a 303 to /.'''
     print("Testing POST request, looking for redirect.")
     mesg = random.choice(["Hi there!", "Hello!", "Greetings!"])
-    uri = "http://localhost:8000/"
+    uri = "http://localhost:8008/"
     try:
         r = requests.post(uri, data = {'message': mesg}, allow_redirects=False)
     except requests.RequestException as e:
@@ -47,7 +47,7 @@ def test_POST_303():
 def test_GET():
     '''The server should accept a GET and return the form.'''
     print("Testing GET request.")
-    uri = "http://localhost:8000/"
+    uri = "http://localhost:8008/"
     try:
         r = requests.get(uri)
     except requests.RequestException as e:
@@ -71,7 +71,7 @@ def test_GET():
 def test_memory():
     '''The server should remember posts.'''
     print("Testing whether messageboard saves messages.")
-    uri = "http://localhost:8000"
+    uri = "http://localhost:8008"
     mesg = random.choice(["Remember me!", "Don't forget.", "You know me."])
     r = requests.post(uri, data = {'message': mesg})
     if r.status_code != 200:
