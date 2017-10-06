@@ -4,7 +4,7 @@
 #
 # Test script for the Bookmark Server.
 #
-# The server should be listening on port 8000, answer a GET request to /
+# The server should be listening on port 8008, answer a GET request to /
 # with an HTML document, answer a POST request by testing the provided URI
 # and responding accordingly, and answer a GET request to /name depending
 # on whether the name was previously stored or not.
@@ -53,17 +53,17 @@ def test_connect():
     print("Testing connecting to the server.")
     try:
         with socket.socket() as s:
-            s.connect(("localhost", 8000))
+            s.connect(("localhost", 8008))
         print("Connection attempt succeeded.")
         return None
     except socket.error:
-        return "Server didn't answer on localhost port 8000.  Is it running?"
+        return "Server didn't answer on localhost port 8008.  Is it running?"
 
 
 def test_GET_root():
     '''The server should accept a GET and return the form.'''
     print("Testing GET request.")
-    uri = "http://localhost:8000/"
+    uri = "http://localhost:8008/"
     try:
         r = requests.get(uri)
     except requests.RequestException as e:
@@ -89,7 +89,7 @@ def test_POST_nodata():
     '''The server should accept a POST and return 400 error on empty form.'''
     print("Testing POST request with empty form.")
 
-    uri = "http://localhost:8000/"
+    uri = "http://localhost:8008/"
     data = {}
 
     try:
@@ -113,7 +113,7 @@ def test_POST_bad():
     '''The server should accept a POST and return 404 error on bad URI.'''
     print("Testing POST request with bad URI.")
 
-    uri = "http://localhost:8000/"
+    uri = "http://localhost:8008/"
     data = {'shortname': 'bad', 'longuri': 'this is fake'}
     try:
         r = requests.post(uri, data=data, allow_redirects=False)
@@ -136,7 +136,7 @@ def test_POST_good():
     '''The server should accept a POST with a good URI and redirect to root.'''
     print("Testing POST request with good URI.")
 
-    uri = "http://localhost:8000/"
+    uri = "http://localhost:8008/"
     data = {'shortname': 'google', 'longuri': 'http://www.google.com/'}
     try:
         r = requests.post(uri, data=data, allow_redirects=False)
@@ -163,7 +163,7 @@ def test_POST_good():
 def test_GET_path():
     '''The server should redirect on a GET to a recorded URI.'''
 
-    uri = "http://localhost:8000/google"
+    uri = "http://localhost:8008/google"
     orig = "http://www.google.com/"
     print("Testing GET request to {}.".format(uri))
 

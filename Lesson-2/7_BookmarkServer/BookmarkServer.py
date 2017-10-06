@@ -42,7 +42,7 @@
 # After writing each step, restart the server and run test.py to test it.
 
 import http.server
-import requests
+import requests as rts
 from urllib.parse import unquote, parse_qs
 
 memory = {}
@@ -74,8 +74,14 @@ def CheckURI(uri, timeout=5):
     False if that GET request returns any other response, or doesn't return
     (i.e. times out).
     '''
-    # 1. Write this function.  Delete the following line.
-    raise NotImplementedError("Step 1 isn't written yet.")
+    link = rts.get(uri)
+    response = int(str(link)[11:14])
+    if(response==200):
+    	return True
+    
+    return False
+
+
 
 
 class Shortener(http.server.BaseHTTPRequestHandler):
@@ -135,6 +141,6 @@ class Shortener(http.server.BaseHTTPRequestHandler):
             raise NotImplementedError("Step 5 isn't written yet!")
 
 if __name__ == '__main__':
-    server_address = ('', 8000)
+    server_address = ('', 8008)
     httpd = http.server.HTTPServer(server_address, Shortener)
     httpd.serve_forever()
