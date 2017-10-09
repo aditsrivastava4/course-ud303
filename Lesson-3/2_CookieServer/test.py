@@ -2,7 +2,7 @@
 #
 # Test script for the Cookie server.
 #
-# The server should be listening on port 8000, answer a GET request with
+# The server should be listening on port 8008, answer a GET request with
 # an HTML document, answer a POST request by setting a cookie and issuing
 # a redirect.
 
@@ -13,18 +13,18 @@ def test_connect():
     print("Testing connecting to the server.")
     try:
         with socket.socket() as s:
-           s.connect(("localhost", 8000))
+           s.connect(("localhost", 8008))
         print("Connection attempt succeeded.")
         return None
     except socket.error:
-        return "Server didn't answer on localhost port 8000.  Is it running?"
+        return "Server didn't answer on localhost port 8008.  Is it running?"
 
 def test_POST_cookie():
     '''The server should accept a POST and return a 303 to / with a cookie.'''
     print("Testing POST request, looking for redirect & cookie.")
 
     name = random.choice(["Alice", "Bob", "Charlie", "Debra"])
-    uri = "http://localhost:8000/"
+    uri = "http://localhost:8008/"
     try:
         r = requests.post(uri, data = {'yourname': name}, allow_redirects=False)
     except requests.RequestException as e:
@@ -52,7 +52,7 @@ def test_POST_cookie():
 def test_GET_plain():
     '''The server should accept a GET and return the form.'''
     print("Testing GET request.")
-    uri = "http://localhost:8000/"
+    uri = "http://localhost:8008/"
     try:
         r = requests.get(uri)
     except requests.RequestException as e:
@@ -77,7 +77,7 @@ def test_GET_plain():
 def test_GET_cookie():
     '''The server should accept a GET with a cookie on and return the name.'''
     print("Testing GET request with cookie.")
-    uri = "http://localhost:8000/"
+    uri = "http://localhost:8008/"
     name = random.choice(["Alice", "Bob", "Carla", "David"])
     jar = requests.cookies.RequestsCookieJar()
     jar.set('yourname', name)
